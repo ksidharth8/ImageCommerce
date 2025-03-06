@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
 			if (order) {
 				// Create a nodemailer transporter using the Mailtrap SMTP server.
 				const transporter = nodemailer.createTransport({
-					host: "sandbox.smtp.mailtrap.io",
+					host: process.env.MAILTRAP_HOST,
 					port: 2525,
 					auth: {
 						user: process.env.MAILTRAP_USER,
@@ -63,10 +63,22 @@ export async function POST(req: NextRequest) {
 
 				// Send the email to the user.
 				await transporter.sendMail({
-					from: "ImageCommerce@example.com",
+					from: '"ImageKit Shop" <noreply@imagekitshop.com>',
 					to: order.userId.email,
-					subject: "Order Confirmation",
-					text: `Your order for ${order.productId.name} has been confirmed.`,
+					subject: "Payment Confirmation - ImageKit Shop",
+					text: `
+						Thank you for your purchase!
+
+						Order Details:
+						- Order ID: ${order._id.toString().slice(-6)}
+						- Product: ${order.productId.name}
+						- Version: ${order.variant.type}
+						- License: ${order.variant.license}
+						- Price: $${order.amount.toFixed(2)}
+
+						Your image is now available in your orders page.
+						Thank you for shopping with ImageKit Shop!
+          				`.trim(),
 				});
 			}
 		}

@@ -18,7 +18,7 @@ interface PopulatedProduct {
 }
 
 // Defining the Order interface.
-interface IOrder {
+export interface IOrder {
     _id?: mongoose.Types.ObjectId;
 	userId: mongoose.Types.ObjectId | PopulatedUser;
 	productId: mongoose.Types.ObjectId | PopulatedProduct;

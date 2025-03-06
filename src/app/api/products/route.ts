@@ -16,10 +16,7 @@ export async function GET() {
 
 		// If no products are found, return a 404 response.
 		if (!products || products.length === 0) {
-			return NextResponse.json(
-				{ message: "No products found" },
-				{ status: 404 }
-			);
+			return NextResponse.json([], { status: 200 });
 		}
 
 		// Return the products in the response.
@@ -59,12 +56,22 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		// Save the new video to the database and return it in the response.
+		// Validate variants
+		for (const variant of body.variants) {
+			if (!variant.type || !variant.price || !variant.license) {
+				return NextResponse.json(
+					{ error: "Invalid variant data" },
+					{ status: 400 }
+				);
+			}
+		}
+
+		// Save the new product to the database and return it in the response.
 		const newProduct = await Product.create(body);
 		return NextResponse.json(newProduct, { status: 201 });
 	} catch (error) {
 		return NextResponse.json(
-			{ error: "Failed to create video" },
+			{ error: "Failed to create product" },
 			{ status: 500 }
 		);
 	}
