@@ -55,7 +55,7 @@ const imageVariantSchema = new Schema<IImageVariant>({
 });
 
 // Defining the Product interface.
-interface IProduct {
+export interface IProduct {
     _id?: mongoose.Types.ObjectId;
 	name: string;
 	description: string;
