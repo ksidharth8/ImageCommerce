@@ -1,4 +1,4 @@
-// Purpose: Define the Product route.
+// Purpose: Define the Product/[id] route.
 
 // Import the required modules.
 import { connectToDatabase } from "@/lib/db";
