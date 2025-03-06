@@ -8,19 +8,12 @@ import { IKUpload } from "imagekitio-next";
 import { Loader2 } from "lucide-react";
 import { IKUploadResponse } from "imagekitio-next/dist/types/components/IKUpload/props";
 
-// Define the FileUploadProps interface with onSuccess, onProgress, and fileType as props.
-interface FileUploadProps {
-	onSuccess: (res: IKUploadResponse) => void;
-	onProgress?: (progress: number) => void;
-	fileType?: "image" | "video";
-}
-
 // Define and export the FileUpload component.
 export default function FileUpload({
 	onSuccess,
-	onProgress,
-	fileType = "image",
-}: FileUploadProps) {
+}: {
+	onSuccess: (res: IKUploadResponse) => void;
+}) {
 	// Define the state variables and functions.
 	const [uploading, setUploading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -39,14 +32,6 @@ export default function FileUpload({
 		setError(null);
 		// Call the onSuccess function with the response data.
 		onSuccess(response);
-	};
-
-	// Define the handleProgress function to handle the upload progress and return the percentage.
-	const handleProgress = (evt: ProgressEvent) => {
-		if (evt.lengthComputable && onProgress) {
-			const percentComplete = (evt.loaded / evt.total) * 100;
-			onProgress(Math.round(percentComplete));
-		}
 	};
 
 	// Define the handleStartUpload function.
@@ -78,10 +63,8 @@ export default function FileUpload({
 				onError={onError}
 				onSuccess={handleSuccess}
 				onUploadStart={handleStartUpload}
-				onUploadProgress={handleProgress}
 				className="file-input file-input-bordered w-full"
 				validateFile={validateFile}
-				useUniqueFileName={true}
 			/>
 			{uploading && (
 				<div className="flex items-center gap-2 text-sm text-primary">
